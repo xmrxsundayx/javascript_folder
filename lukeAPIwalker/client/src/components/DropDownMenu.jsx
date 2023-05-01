@@ -2,7 +2,9 @@ import axios from 'axios'
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 
-const DropDownMenu = ({ selectedValue, setSelectedValue, idValue, setIdValue }) => {
+const DropDownMenu = () => {
+    const [selectedValue, setSelectedValue] = useState('')
+    const [idValue, setIdValue] = useState('')
     const navigate= useNavigate();
     const options = [
         { label: 'People', value: 'people' },
@@ -12,7 +14,6 @@ const DropDownMenu = ({ selectedValue, setSelectedValue, idValue, setIdValue }) 
         { label: 'Vehicles', value: 'vehicles' },
         { label: 'Starships', value: 'starships' }
     ];
-    const [apiData, setApiData] = useState({})
 
     const dropDownChange = (e) => {
         setSelectedValue(e.target.value)
@@ -24,30 +25,28 @@ const DropDownMenu = ({ selectedValue, setSelectedValue, idValue, setIdValue }) 
 
     const handleOnSubmit =(e) => {
         e.preventDefault();
-        axios
-            .get(`https://swapi.dev/api/${selectedValue}/${idValue}`)
-            .then((response) => {
-                console.log('This is a response for HandleOnSubmit', response);
-            setApiData(response.data);
+        // ================================
+        // not the best place to make an api call, try and call api as close to where you will utilize the data. This grabbed the api and stored a large amount of data that could be passed but not the most efficient way .
+        // ================================
+        // axios
+        //     .get(`https://swapi.dev/api/${selectedValue}/${idValue}`)
+        //     .then((response) => {
+        //         console.log('This is a response for HandleOnSubmit', response);
+        //     setApiData(response.data);
             navigate(`/details/${selectedValue}/${idValue}`);
-            })
-            .catch((err) => {
-                console.log(err);
-                setApiData({error:true});
-                
-            });
-        
+        // setIdValue ("")
+        // setSelectedValue ("")
         };
-        if (apiData?.error) {
-            return (
-                <div>
-                    {/* <video autoplay loop muted playsinline>
-                        <source src="https://i.gifer.com/5lMw.gif" type="video/gif"/>
-                    </video>                     */}
-                    <h1>These aren't the DROIDS you're looking for</h1>
-                </div>
-            )
-        }else{
+        // if (apiData?.error) {
+        //     return (
+        //         <div>
+        //             {/* <video autoplay loop muted playsinline>
+        //                 <source src="https://i.gifer.com/5lMw.gif" type="video/gif"/>
+        //             </video>                     */}
+        //             <h1>These aren't the DROIDS you're looking for</h1>
+        //         </div>
+        //     )
+        // }else{
 
             return (
                 <div className="container">
@@ -60,8 +59,8 @@ const DropDownMenu = ({ selectedValue, setSelectedValue, idValue, setIdValue }) 
                                 value={selectedValue}
                                 onChange={dropDownChange}
                             >
-                                {options.map((option) => (
-                                    <option key={option.value} value={option.value}>
+                                {options.map((option, idx) => (
+                                    <option key={idx} value={option.value}>
                                         {option.label}
                                     </option>
                                 ))}
@@ -74,6 +73,5 @@ const DropDownMenu = ({ selectedValue, setSelectedValue, idValue, setIdValue }) 
                 </div>
             );  
         };
-    }
 
 export default DropDownMenu

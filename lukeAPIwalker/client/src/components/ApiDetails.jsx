@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 
 const ApiDetails = () => {
-
+    const [apiData, setApiData] = useState('')
     const { selectedValue, id } = useParams();
-    const [apiData, setApiData] = useState({});
+    const [loaded, setLoaded] = useState(false)
 
     useEffect(() => {
         axios
@@ -13,35 +13,36 @@ const ApiDetails = () => {
             .then((response) => {
                 console.log("this is the api details response",response.data)
                 setApiData(response.data);
+                setLoaded(true)
             })
             .catch((err) => {
                 console.log(err);
                 setApiData({ error: true });
             })
-    }, []);
-
-    if (apiData?.error) {
+    }, [id,selectedValue]);
         return (
+            <div>
+                    {apiData.error &&(
             <div>
                 <img src="https://i.imgur.com/KyPXMl7.png" alt="Obi-Wan Kenobi" />
                 <h1>These aren't the droids you're looking for</h1>
             </div>
-        )
-    } else {
-        return (
+    )}
+
+            {loaded?
             <div>
                 <h1>{apiData.name}</h1>
-                {apiData.people === "people" && (
+                {selectedValue === "people" && (
                     <>
-                        <p>Height: {apiData.height}</p>
-                        <p>Mass: {apiData.mass}</p>
+                        <p>Height: {apiData.height }</p>
+                        <p>Mass: { apiData.mass}</p>
                         <p>Gender: {apiData.gender}</p>
                     </>
                 )}
                 {selectedValue === "planets" && (
                     <>
                         <p>Climate: {apiData.climate}</p>
-                        <p>Terrain: {apiData.terrain}</p>
+                        <p>Terrain: { apiData.terrain}</p>
                         <p>Population: {apiData.population}</p>
                     </>
                 )}
@@ -49,7 +50,7 @@ const ApiDetails = () => {
                     <>
                         <p>Director: {apiData.director}</p>
                         <p>Release Date: {apiData.release_date}</p>
-                        <p>Opening Crawl: {apiData.opening_crawl}</p>
+                        <p>Opening Crawl: { apiData.opening_crawl}</p>
                     </>
                 )}
                 {selectedValue === "species" && (
@@ -74,8 +75,9 @@ const ApiDetails = () => {
                     </>
                 )}
             </div>
+            :null}
+        </div>
         )
     }
-}
 
 export default ApiDetails;
