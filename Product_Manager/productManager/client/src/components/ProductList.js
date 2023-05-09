@@ -16,15 +16,24 @@ const ProductList = (props) => {
     }, [])
     
     return (
-        <div>
-            <h1>All Products:</h1>
-            <p>-----------------------------------------------</p>
+        <div className="row">
+            <div className="col-md-12">
+                <h2>All Products:</h2>
+                <hr className="my-4"/>
+            </div>
             {
                 product.map((product, index)=>{
-                return <div key={index}>
-
-                    <Link to={`/product/${product._id}`}>{product.title}'s Page!</Link>
+                return (
+                    <div className="col-md-4" key={index}>
+                        <div className="card mb-4">
+                            <div className="card-body">
+                                <h4 className="card-title">{product.title}</h4>
+                                <p className="card-text">Price: {product.price}</p>
+                                <Link to={`/product/${product._id}`} className="btn btn-primary">View Details</Link>
+                            </div>
+                        </div>
                     </div>
+                )
                 })
             }
         </div>
