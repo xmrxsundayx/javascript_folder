@@ -5,7 +5,7 @@ module.exports.index = (request, response) =>{
         message: "Hello World!"
     });
 }
-module. exports.createPerson = (request, response) => {
+module.exports.createPerson = (request, response) => {
     Person.create(request.body)
     .then(person => response.json(person))
     .catch(err => response.json(err));
