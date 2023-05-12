@@ -12,6 +12,7 @@ const MainView = (props) =>{
             <h1 className='my-5'>Product Inventory</h1>
             <ProductForm product = {product} setProduct = {setProduct}/>
             <hr/>
+            <ProductList product = {product} setProduct = {setProduct}/>
             <ProductList product = {product} setProduct = {setProduct} removeFromDom={removeFromDom}/>
         </div>
     )

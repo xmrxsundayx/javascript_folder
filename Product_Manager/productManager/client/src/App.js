@@ -1,11 +1,9 @@
 import './App.css';
-import React, {useState} from 'react';
-import axios from 'axios';
+import React from 'react';
 import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
 import MainView from './views/MainView';
 import Details from './components/Details'
 import Update from './components/Update';
-// import ProductForm from './components/ProductForm';
 
 function App() {
   return (

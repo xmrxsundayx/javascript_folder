@@ -10,7 +10,7 @@ const ProductList = (props) => {
             })
             .catch(err => console.log(err))
     }
-    
+
     useEffect(()=>{
     	axios.get("http://localhost:8000/api/product")
     	.then((res)=>{
