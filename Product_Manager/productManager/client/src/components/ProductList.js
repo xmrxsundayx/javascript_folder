@@ -4,20 +4,9 @@ import { Link } from 'react-router-dom';
 import DeleteButton from './DeleteButton';
 
 const ProductList = (props) => {
-    const [product, setProduct] = useState([])
-    useEffect(()=>{
-        axios.get("http://localhost:8000/api/product")
-        .then((res)=>{
-        console.log(res.data);
-            setProduct(res.data);
-    })
-        .catch((err)=>{
-            console.log(err);
-        })
-    }, [])
-    const removeFromDom = (productId) =>{
-        setProduct(product.filter(product => product._id !== productId))
-            }
+
+    const {product, removeFromDom} = props
+
 
     return (
         <div className="row">
@@ -25,17 +14,17 @@ const ProductList = (props) => {
                 <h2>All Products:</h2>
             </div>
             {
-                product.map((product, index)=>{
+                product.map((newProduct, index)=>{
                 return (
                     <div className="col-md-4" key={index}>
                         <div className="card mb-4">
                             <div className="card-body">
-                                <h4 className="card-title">{product.title}</h4>
-                                <p className="card-text">Price: {product.price}</p>
-                                <Link to={`/product/${product._id}`} className="m-2 btn btn-primary">View Details</Link>
-                                <Link to={"/product/edit/" + product._id}  className="m-2 btn btn-primary">Edit</Link>
-                                <DeleteButton productId = {product._id} successCallback={
-                                    ()=>removeFromDom(product._id)
+                                <h4 className="card-title">{newProduct.title}</h4>
+                                <p className="card-text">Price: {newProduct.price}</p>
+                                <Link to={`/product/${newProduct._id}`} className="m-2 btn btn-primary">View Details</Link>
+                                <Link to={"/product/edit/" + newProduct._id}  className="m-2 btn btn-primary">Edit</Link>
+                                <DeleteButton  productId = {newProduct._id} successCallback={
+                                    ()=>removeFromDom(newProduct._id)
                                 } />
                             </div>
                         </div>

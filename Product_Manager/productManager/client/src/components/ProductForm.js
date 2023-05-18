@@ -12,6 +12,9 @@ const ProductForm = (props) => {
         e.preventDefault();
         console.log(onSubmitProp)
         onSubmitProp({ title, price, description})
+        setTitle('');
+        setPrice('');
+        setDescription('');
         navigate("/home");
         }
 
