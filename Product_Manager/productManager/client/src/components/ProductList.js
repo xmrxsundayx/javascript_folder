@@ -1,27 +1,24 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-const ProductList = (props) => {
-    const {removeFromDom,product, setProduct} = props;
-    const deleteProduct = (productId) =>{
-        axios.delete('http://localhost:8000/api/product/' + productId)
-            .then(res => {
-                removeFromDom(productId)
-            })
-            .catch(err => console.log(err))
-    }
+import DeleteButton from './DeleteButton';
 
+const ProductList = (props) => {
+    const [product, setProduct] = useState([])
     useEffect(()=>{
-    	axios.get("http://localhost:8000/api/product")
-    	.then((res)=>{
-	    console.log(res.data);
+        axios.get("http://localhost:8000/api/product")
+        .then((res)=>{
+        console.log(res.data);
             setProduct(res.data);
-	})
-    	.catch((err)=>{
+    })
+        .catch((err)=>{
             console.log(err);
-    	})
+        })
     }, [])
-    
+    const removeFromDom = (productId) =>{
+        setProduct(product.filter(product => product._id !== productId))
+            }
+
     return (
         <div className="row">
             <div className="col-md-12">
@@ -37,7 +34,9 @@ const ProductList = (props) => {
                                 <p className="card-text">Price: {product.price}</p>
                                 <Link to={`/product/${product._id}`} className="m-2 btn btn-primary">View Details</Link>
                                 <Link to={"/product/edit/" + product._id}  className="m-2 btn btn-primary">Edit</Link>
-                                <button className="m-2 btn btn-primary" onClick={(e)=>{deleteProduct(product._id)}}>Delete</button>
+                                <DeleteButton productId = {product._id} successCallback={
+                                    ()=>removeFromDom(product._id)
+                                } />
                             </div>
                         </div>
                     </div>

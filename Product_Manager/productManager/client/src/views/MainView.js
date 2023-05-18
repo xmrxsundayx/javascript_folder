@@ -1,18 +1,39 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import ProductForm from '../components/ProductForm';
 import ProductList from '../components/ProductList';
-const MainView = (props) =>{
+const MainView = () =>{
     const [product, setProduct] = useState([]);
-    const removeFromDom = productId => {
-        setProduct(product.filter(product => product._id != productId));
+    useEffect(() => {
+        axios.get("http://localhost:8000/api/product")
+        .then(res=>{
+            setProduct(res.data);
+        })
+        .catch((err) => console.log(err))
+    },[])
+    const removeFromDom = productId =>{
+        axios.delete('http://localhost:8000/api/product' +productId)
+        .then((res) =>{
+            console.log(res);
+            console.log(res.data);
+            setProduct(product.filter(product => product._id !== productId));
+        })
+        .catch((err) =>console.log(err))
     }
+    const createProduct =productParam=>{
+        axios.post('http://localhost:8000/api/product', productParam)
+        .then(res => {
+            console.log(res);
+            console.log(res.data)
+            setProduct([...product, res.data])
+        })
+        .catch((err) =>console.log(err))
+    }
+    
     return (
         <div className='container'>
-            <h1 className='my-5'>Product Inventory</h1>
-            <ProductForm product = {product} setProduct = {setProduct}/>
+            <ProductForm onSubmitProp = {createProduct} initialProductTitle = "" initialProductPrice = "" initialProductDescription = ""/>
             <hr/>
-            <ProductList product = {product} setProduct = {setProduct}/>
             <ProductList product = {product} setProduct = {setProduct} removeFromDom={removeFromDom}/>
         </div>
     )
