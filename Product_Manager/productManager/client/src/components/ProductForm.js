@@ -2,10 +2,11 @@ import React, {useState} from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom';
 
 const ProductForm = (props) => {
-    const {initialTitle, initialPrice, initialDescription, onSubmitProp} = props;
+    const {initialTitle, initialPrice, initialDescription, onSubmitProp, errors} = props;
     const[ title, setTitle] = useState(initialTitle);
     const[price, setPrice] = useState(initialPrice);
     const[description, setDescription] = useState(initialDescription);
+    
     const navigate = useNavigate()
 
     const onSubmitHandler  = (e) =>{
@@ -22,6 +23,10 @@ const ProductForm = (props) => {
         <form onSubmit={onSubmitHandler}>
             <p>
                 <label className='form-label'>Title:</label><br/>
+                {
+                    errors.title ? 
+                    <h3>{errors.title.message}</h3>:""
+                }
                 <input  type="text" name='title' value={title} onChange = {(e)=>setTitle(e.target.value)}/>
             </p>
             <p>
